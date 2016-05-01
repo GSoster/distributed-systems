@@ -9,13 +9,15 @@ import br.com.guilhermesoster.superTrunfop2p.common.Deck;
 
 /**
  *
- * @author Guilherme
+ * @author Guilherme Soster Santos (GSoster)
  */
 public class Server {    
     public static void main(String []args){
         
-        Deck deck = new Deck("cards.txt");
+        System.out.println("Server has started");
+        Deck deck = new Deck("estados.csv");
         
+        deck.showAllCards();
     }
     
 }

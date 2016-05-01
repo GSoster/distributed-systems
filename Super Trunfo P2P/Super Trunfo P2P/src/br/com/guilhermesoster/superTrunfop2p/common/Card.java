@@ -14,8 +14,8 @@ import java.io.Serializable;
 public class Card implements Serializable {
 
     private String name;
-    private int population;
-    private int area;
+    private float area;
+    private int population;    
     private float HDI;//idh (indice desenvolvimento humano)
     private int GDP;//pib (produto interno bruto) Bilhões
 
@@ -30,8 +30,9 @@ public class Card implements Serializable {
      * @param HDI
      * @param GDP 
      */
-    public Card(String name, int population, float HDI, int GDP) {
+    public Card(String name, float area, int population, int GDP, float HDI) {
         this.name = name;
+        this.area = area;
         this.population = population;
         this.HDI = HDI;
         this.GDP = GDP;
@@ -53,11 +54,11 @@ public class Card implements Serializable {
         this.population = population;
     }
 
-    public int getArea() {
+    public float getArea() {
         return area;
     }
 
-    public void setArea(int area) {
+    public void setArea(float area) {
         this.area = area;
     }
 
@@ -77,4 +78,6 @@ public class Card implements Serializable {
         this.GDP = GDP;
     }
 
+    
+    
 }

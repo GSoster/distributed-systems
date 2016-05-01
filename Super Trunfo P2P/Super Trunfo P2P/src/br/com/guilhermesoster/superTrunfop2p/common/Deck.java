@@ -11,9 +11,10 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 /**
  *
- * @author Guilherme
+ * @author Guilherme Soster Santos (GSoster)
  */
 public class Deck {
 
@@ -29,10 +30,11 @@ public class Deck {
                 String line = sc.nextLine();                
                 String card[] = line.split(";");                
                 String name = card[0];
-                int population = Integer.parseInt(card[1]);
-                float hdi = Float.parseFloat(card[2]);
-                int gdp = Integer.parseInt(card[3]);
-                cards[numCards-1] = new Card(name, population, hdi, gdp);                                
+                float area = Float.parseFloat(card[1].trim());
+                int population = Integer.parseInt(card[2].trim());                
+                int gdp = Integer.parseInt(card[3].trim());
+                float hdi = Float.parseFloat(card[4].trim());
+                cards[numCards-1] = new Card(name, area, population, gdp, hdi);                                
                 numCards--;
             }
         } catch (FileNotFoundException ex) {
@@ -40,4 +42,11 @@ public class Deck {
         }
     }
 
+    
+    public void showAllCards(){
+        for(Card c : cards){
+            System.out.println("CARD: "+c.getName());
+        }
+    }
+    
 }
