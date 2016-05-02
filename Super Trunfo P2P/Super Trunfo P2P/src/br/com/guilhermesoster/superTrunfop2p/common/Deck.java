@@ -7,6 +7,7 @@ package br.com.guilhermesoster.superTrunfop2p.common;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Guilherme Soster Santos (GSoster)
  */
-public class Deck {
+public class Deck  implements Serializable{
 
     private Card[] cards;
     private int numCards;
