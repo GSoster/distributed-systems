@@ -6,6 +6,8 @@
 package br.com.guilhermesoster.superTrunfop2p.server;
 
 import br.com.guilhermesoster.superTrunfop2p.common.Deck;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  *
@@ -13,6 +15,9 @@ import br.com.guilhermesoster.superTrunfop2p.common.Deck;
  */
 public class Server {    
     public static void main(String []args){
+        
+        ServerSocket listenSocket;
+        Socket players[];
         
         System.out.println("Server has started");
         Deck deck = new Deck("estados.csv");

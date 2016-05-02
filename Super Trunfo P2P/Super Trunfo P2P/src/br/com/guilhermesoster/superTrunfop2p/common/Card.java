@@ -79,5 +79,16 @@ public class Card implements Serializable {
     }
 
     
+    public void printCard(){
+        System.out.println("#############################");
+        System.out.println("Name: "+ this.name);
+        System.out.println("Area: " + this.area);
+        System.out.println("Population: " + this.population);
+        System.out.println("GDP: " + this.GDP);
+        System.out.println("HDI: " + this.HDI);
+        System.out.println("#############################");
+        System.out.println("");
+    }
+    
     
 }

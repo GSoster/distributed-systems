@@ -45,7 +45,7 @@ public class Deck {
     
     public void showAllCards(){
         for(Card c : cards){
-            System.out.println("CARD: "+c.getName());
+            c.printCard();
         }
     }
     
