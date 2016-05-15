@@ -1,10 +1,7 @@
 package br.com.guilhermesoster.superTrunfop2p.server;
 
 import br.com.guilhermesoster.superTrunfop2p.common.Deck;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -13,35 +10,50 @@ import java.util.logging.Logger;
 /**
  *
  * @author Guilherme Soster Santos (GSoster) #1 - ler arquivo .csv - instanciar
- *  cartas - montar deck #2 - receber clientes - enviar deck - enviar
- * informações de um cliente para o outro #3 - finaliar. (a partir de então a
- * comunicação é entre clientes)
+ * cartas - montar deck #2 - receber clientes - enviar deck - enviar informações
+ * de um cliente para o outro #3 - finaliar. (a partir de então a comunicação é
+ * entre clientes)
  */
 public class Server {
 
-    public static void main(String[] args) {
+    private ServerSocket listenSocket;
+    private Socket players[] = new Socket[2];
+    private final int port = 1096;
+    private Deck deck;
+    private String previousClientAddress = "-";
 
-        ServerSocket listenSocket;
-        Socket players[] = new Socket[2];
-        ObjectOutputStream oos;
-        int port = 1096;
-
+    public Server() {
         //initialize deck
         System.out.println("Server has started");
-        Deck deck = new Deck("estados.csv");
+        this.deck = new Deck("estados.csv");//deck is responsible for loading its cards
         //deck.showAllCards();
+    }
 
+    public void communicate() {
         try {
             listenSocket = new ServerSocket(port);
             System.out.println("Waiting for players to connect.");
-            players[0] = listenSocket.accept();
-            System.out.println("Player one connected");
-            ObjectOutputStream objectOutputStream
-                    = new ObjectOutputStream(players[0].getOutputStream());
+            while (true) {
+                Socket clientSocket = listenSocket.accept();
+                ServerThread serverThread = new ServerThread(deck, clientSocket, previousClientAddress);
+                this.previousClientAddress = clientSocket.getInetAddress().toString();
+                System.out.println("Server: previous client Adrress: " + this.previousClientAddress);
+                serverThread.run();
+                serverThread.closeConnection();
+                clientSocket = null;
+                serverThread = null;
+                System.out.println("Server: Connection closed");
+            }
 
-            objectOutputStream.writeObject(deck);
-            objectOutputStream.close();
+            //player 1
+            /*players[0] = listenSocket.accept();
+             System.out.println("Player one connected");
+             ObjectOutputStream objectOutputStream
+             = new ObjectOutputStream(players[0].getOutputStream());
 
+             objectOutputStream.writeObject(this.deck);
+             objectOutputStream.close();*/
+            //player 2
             //players[1] = listenSocket.accept();
             //System.out.println("Player two connected");                                    
             //pass Informations
@@ -50,7 +62,11 @@ public class Server {
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
+    public static void main(String[] args) {
+        Server server = new Server();
+        server.communicate();
     }
 
 }
