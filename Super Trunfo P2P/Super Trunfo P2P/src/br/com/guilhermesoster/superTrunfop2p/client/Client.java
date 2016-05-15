@@ -17,15 +17,16 @@ import java.util.logging.Logger;
  */
 public class Client {
 
-    private Socket serverConnectionSocket;
+    private Socket serverConnectionSocket;//used to connect with the initial server
     private final int opponentPort = 1095;
     private ServerSocket listenSocket;
     private String opponentAddress = "-";
     private Socket opponent;
-    private final int port;
+    private final int port;//used to connect with the initial server
     private final String host;
     private Deck deck;
     private boolean isConnected = false;
+    private boolean isTurn = false;
 
     public Client() {
         this.port = 1096;
@@ -92,6 +93,8 @@ public class Client {
     public void waitOpponentConnection() {
         try {
             this.listenSocket = new ServerSocket(opponentPort);
+            this.opponent = this.listenSocket.accept();
+            this.opponentAddress = this.opponent.getInetAddress().getCanonicalHostName();
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,7 +113,12 @@ public class Client {
      ########### / Transfer to opponent #########
      */
     public void connectToOpponent() {
-
+        try {
+            this.opponent = new Socket(this.opponentAddress, opponentPort);
+            System.out.println("\t #Client: CONNECTED !!! ");
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /*
@@ -152,33 +160,35 @@ public class Client {
         this.listenSocket = listenSocket;
     }
 
+    public boolean isIsTurn() {
+        return isTurn;
+    }
+
+    public void setIsTurn(boolean isTurn) {
+        this.isTurn = isTurn;
+    }
+
     /*
      ########### / GETS & SETS #########
      */
-    
     //###################################3333
-    
     //Main
-    
     public static void main(String args[]) {
         Client client = new Client();
         //first to connect, so wait for other client to connect to this one
         if (client.getOpponentAddress() == null || "-".equals(client.getOpponentAddress())) {
             System.out.println("\t #Client: opponent is null");
-            try {
-                System.out.println("\t #Client: waiting opponent to connect");
-                client.waitOpponentConnection();
-                client.opponent = client.getListenSocket().accept();
-                client.setOpponentAddress(client.getSocket().getInetAddress().toString());
-                System.out.println("\t #Client: opponent connected, infos taken.");
-            } catch (IOException ex) {
-                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
+            System.out.println("\t #Client: waiting opponent to connect");
+            client.waitOpponentConnection();
+            System.out.println("\t #Client: opponent connected, infos taken: " + client.getOpponentAddress());
+        } else {//already know the informations of other client, so connects to it.
             System.out.println("\t #Client: opponent isn't null");
-
+            client.connectToOpponent();
         }
-
+        
+        System.out.println("#####################################");
+        System.out.println("\t #Client: Now the game can start!");
+        
     }
 
 }

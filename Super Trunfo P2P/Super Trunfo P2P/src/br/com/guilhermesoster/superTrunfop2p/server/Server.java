@@ -36,7 +36,8 @@ public class Server {
             while (true) {
                 Socket clientSocket = listenSocket.accept();
                 ServerThread serverThread = new ServerThread(deck, clientSocket, previousClientAddress);
-                this.previousClientAddress = clientSocket.getInetAddress().toString();
+                //this.previousClientAddress = clientSocket.getInetAddress().toString();
+                this.previousClientAddress = clientSocket.getInetAddress().getCanonicalHostName();
                 System.out.println("Server: previous client Adrress: " + this.previousClientAddress);
                 serverThread.run();
                 serverThread.closeConnection();
