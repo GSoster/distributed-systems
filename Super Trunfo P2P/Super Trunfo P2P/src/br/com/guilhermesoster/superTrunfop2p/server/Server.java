@@ -35,6 +35,7 @@ public class Server {
             System.out.println("Waiting for players to connect.");
             while (true) {
                 Socket clientSocket = listenSocket.accept();
+                deck.shuffle();
                 ServerThread serverThread = new ServerThread(deck, clientSocket, previousClientAddress);
                 //this.previousClientAddress = clientSocket.getInetAddress().toString();
                 this.previousClientAddress = clientSocket.getInetAddress().getCanonicalHostName();

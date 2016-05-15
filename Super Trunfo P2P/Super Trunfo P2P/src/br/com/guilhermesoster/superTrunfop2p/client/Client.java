@@ -1,13 +1,17 @@
 package br.com.guilhermesoster.superTrunfop2p.client;
 
+import br.com.guilhermesoster.superTrunfop2p.common.Card;
+import br.com.guilhermesoster.superTrunfop2p.common.Combat;
 import br.com.guilhermesoster.superTrunfop2p.common.Deck;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +26,7 @@ public class Client {
     private ServerSocket listenSocket;
     private String opponentAddress = "-";
     private Socket opponent;
+    private final String playersName;
     private final int port;//used to connect with the initial server
     private final String host;
     private Deck deck;
@@ -39,6 +44,7 @@ public class Client {
         } else {
             System.out.println("\t #Client: deck wasn't received");
         }
+        this.playersName = JOptionPane.showInputDialog("Insert your name: ");
         System.out.println("\t #Client: waiting for opponent info");
         this.receiveOpponentAddress();
     }
@@ -66,6 +72,7 @@ public class Client {
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(serverConnectionSocket.getInputStream());
             this.deck = (Deck) objectInputStream.readObject();
+            this.deck.shuffle();
             System.out.println("Client: Deck received");
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -168,9 +175,25 @@ public class Client {
         this.isTurn = isTurn;
     }
 
+    public String getPlayersName() {
+        return this.playersName;
+    }
+
     /*
      ########### / GETS & SETS #########
      */
+    /*
+     ###########   UI Related #########
+     */
+    public int askWhichAttribute() {
+        Card c = this.getDeck().getDeck().get(this.getDeck().getDeck().size() - 1);//get last element(card)
+        int attribute = Integer.parseInt(JOptionPane.showInputDialog(null, c.toString(), this.getPlayersName() + " escolha um atributo de sua carta", JOptionPane.DEFAULT_OPTION));
+        return attribute;
+    }
+    /*
+     ########### / UI Related #########
+     */
+
     //###################################3333
     //Main
     public static void main(String args[]) {
@@ -181,14 +204,25 @@ public class Client {
             System.out.println("\t #Client: waiting opponent to connect");
             client.waitOpponentConnection();
             System.out.println("\t #Client: opponent connected, infos taken: " + client.getOpponentAddress());
+            client.setIsTurn(false);
+            Combat.setClientTwo(client);//the one that is going to start to play
         } else {//already know the informations of other client, so connects to it.
             System.out.println("\t #Client: opponent isn't null");
+            client.setIsTurn(true);
             client.connectToOpponent();
+            //the second one that will start to play
+            Combat.setClientOne(client);
         }
-        
+
         System.out.println("#####################################");
         System.out.println("\t #Client: Now the game can start!");
-        
+
+        /*System.out.println("Sua carta é: ");
+         ArrayList<Card> deck = client.getDeck().getDeck();
+         JOptionPane.showInputDialog(null, deck.get(deck.size() - 1).toString(), client.getPlayersName() + " escolha um atributo de sua carta", JOptionPane.DEFAULT_OPTION);
+         System.out.println("OK, escolha aconteceu!");*/
+        Combat.makeTurn(client.isTurn);
+
     }
 
 }

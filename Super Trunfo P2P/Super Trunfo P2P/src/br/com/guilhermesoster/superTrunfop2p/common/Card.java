@@ -15,7 +15,7 @@ public class Card implements Serializable {
 
     private String name;
     private float area;
-    private int population;    
+    private int population;
     private float HDI;//idh (indice desenvolvimento humano)
     private int GDP;//pib (produto interno bruto) Bilhões
 
@@ -24,11 +24,11 @@ public class Card implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param name
      * @param population
      * @param HDI
-     * @param GDP 
+     * @param GDP
      */
     public Card(String name, float area, int population, int GDP, float HDI) {
         this.name = name;
@@ -78,10 +78,15 @@ public class Card implements Serializable {
         this.GDP = GDP;
     }
 
-    
-    public void printCard(){
+    @Override
+    public String toString() {
+        String toString = "1 - Name: " + this.name + "\n 2 - Area: " + this.area + "\n 3 - Population: " + this.population + "\n 4 - GDP: " + this.GDP + "\n 5 - HDI: " + this.HDI;
+        return toString;
+    }
+
+    public void printCard() {
         System.out.println("#############################");
-        System.out.println("Name: "+ this.name);
+        System.out.println("Name: " + this.name);
         System.out.println("Area: " + this.area);
         System.out.println("Population: " + this.population);
         System.out.println("GDP: " + this.GDP);
@@ -89,6 +94,8 @@ public class Card implements Serializable {
         System.out.println("#############################");
         System.out.println("");
     }
+
+    
     
     
 }
