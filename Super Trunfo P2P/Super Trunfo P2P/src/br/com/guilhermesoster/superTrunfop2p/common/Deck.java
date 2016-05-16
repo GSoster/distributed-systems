@@ -62,7 +62,7 @@ public class Deck implements Serializable {
      */
     public void shuffle() {
         //Collections.shuffle(Arrays.asList(cards));
-        Collections.shuffle(deck);        
+        Collections.shuffle(deck);
     }
 
     /**
@@ -77,6 +77,12 @@ public class Deck implements Serializable {
     public ArrayList<Card> getDeck() {
         return this.deck;
     }
-       
-    
+
+    public Card getLast() {
+        return this.getDeck().get(this.getDeck().size() - 1);
+    }
+
+    public void removeLast() {
+        this.getDeck().remove(this.getDeck().size() - 1);
+    }
 }

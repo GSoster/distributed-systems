@@ -6,15 +6,16 @@
 package br.com.guilhermesoster.superTrunfop2p.common;
 
 import br.com.guilhermesoster.superTrunfop2p.client.Client;
+import java.io.Serializable;
 
 /**
  *
  * @author Guilherme
  */
-public class Combat {
+public class Combat implements Serializable {
 
     private static Client clientOne;//the first starting to play
-    private static Client clientTwo;
+    private static Client clientTwo;//the one that had to wait for connection
 
     public Combat() {
 
@@ -45,11 +46,14 @@ public class Combat {
      */
     public static void makeTurn(boolean shouldOccur) {
         if (!shouldOccur) {
+            System.out.println("Turno não aceito, não é sua vez. " + clientTwo.getPlayersName() + " pode? " + clientTwo.isIsTurn());
+            System.out.println("É a vez do jogador " + clientOne.getPlayersName());
             return;
         }
         Client clientToAsk = getWhoseTurnIs();//returns the client that should be asked.
+        System.out.println("Vez do jogador: " + clientToAsk.getPlayersName());
         int option = clientToAsk.askWhichAttribute();
-
+        calcWinner(option);
         System.out.println("TURNO OCORREU! Opção escolhida: " + option);
         inverseTurns();
     }
@@ -62,8 +66,18 @@ public class Combat {
      */
     public static void calcWinner(int option) {
         switch (option) {
-            case 1:
+            case 1://area
+                System.out.println("Escolheu area");
+                break;
+            case 2://population
+                System.out.println("Escolheu populacao");
+                break;
 
+            case 3://GDP (produto interno bruto)
+                System.out.println("Escolheu GDP");
+                break;
+            case 4://HDI (indice de desenvolvimento humano)
+                System.out.println("Escolheu IDH");
                 break;
         }
     }
@@ -72,8 +86,12 @@ public class Combat {
      * Change who can make the next move
      */
     public static void inverseTurns() {
+        System.out.println("ANTES Turno do cliente 1: " + clientOne.isIsTurn());
         clientOne.setIsTurn(!clientOne.isIsTurn());
+        System.out.println("DEPOIS Turno do cliente 1: " + clientOne.isIsTurn());
+        System.out.println("#ANTES#Turno do cliente 2: " + clientTwo.isIsTurn());
         clientTwo.setIsTurn(!clientTwo.isIsTurn());
+        System.out.println("#DEPOIS#Turno do cliente 2: " + clientTwo.isIsTurn());
     }
 
     /**

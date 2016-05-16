@@ -80,7 +80,7 @@ public class Card implements Serializable {
 
     @Override
     public String toString() {
-        String toString = "1 - Name: " + this.name + "\n 2 - Area: " + this.area + "\n 3 - Population: " + this.population + "\n 4 - GDP: " + this.GDP + "\n 5 - HDI: " + this.HDI;
+        String toString = "Name: " + this.name + "\n 1 - Area: " + this.area + "\n 2 - Population: " + this.population + "\n 3 - GDP: " + this.GDP + "\n 4 - HDI: " + this.HDI;
         return toString;
     }
 
@@ -95,7 +95,20 @@ public class Card implements Serializable {
         System.out.println("");
     }
 
-    
-    
-    
+    public boolean areaBiggerThan(Card opponent) {
+        return this.area >= opponent.getArea();
+    }
+
+    public boolean populationBiggerThan(Card opponent) {
+        return this.population >= opponent.getPopulation();
+    }
+
+    public boolean GDPBiggerThan(Card opponent) {
+        return this.GDP >= opponent.getGDP();
+    }
+
+    public boolean HDIBiggerThan(Card opponent) {
+        return this.HDI >= opponent.getHDI();
+    }
+
 }
